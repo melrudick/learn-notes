@@ -4,7 +4,7 @@ First we create a cats table from the command line: rake db:create_migration NAM
 
 A primary key uniquely identifies each record in a table. It must be a unique and cannot have NULL values. Luckily, R will create a primary key for us and will also auto-increment it every time we save a new row in our table.
 
-If we use tux to add cats to a table and owners to another, we need to use a foreign key to relate the table to each other. A foreign key points to a primary key in another table. In AR we willuse the tablename_id convention. To add the foreign key to our cats table, we will create another migration.The foreign key always sits on the table of the object that belongs to. In this case, because cats belong to an owner, the owner_id becomes a column in the cats table.
+If we use tux to add cats to a table and owners to another, we need to use a foreign key to relate the table to each other. A foreign key points to a primary key in another table. In AR we will use the tablename_id convention. To add the foreign key to our cats table, we will create another migration.The foreign key always sits on the table of the object that belongs to. In this case, because cats belong to an owner, the owner_id becomes a column in the cats table.
 
 Belongs to and has many -
 Table structure: A cat belongs to an owner and an owner can have many cats.

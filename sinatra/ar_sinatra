@@ -14,8 +14,8 @@ READ - We can read data in two ways. We may want to read or deliver to our user 
 -get '/models/:id' handles requests for a specific instance. If a user types www.mysite.com/models/2, this route will catch the request and get the id number 2 from the params. It will then find the instance with that id and set it equal to an instance variable @model = Model.find(params[:id]) and render to show.erb
 -show.erb renders @model object.
 UPDATE - to use update action, we need a controller action that renders an update form, and we need a controller action to catch the post request sent my that form.
--get '/mdels/:id/edit' controller action will render the edit.erb page.
--edit.erb view page will contain the form for editing a given instance of a model. this form will send a PATCH reqwuest tp patch '/models/:id'.
+-get '/models/:id/edit' controller action will render the edit.erb page.
+-edit.erb view page will contain the form for editing a given instance of a model. this form will send a PATCH request tp patch '/models/:id'.
 -patch controller action will find the instance to update using the id from params, update and save instance. We need to update config.ru to use Sinatra middleware for patch requests
 use Rack::MethodOverride
 run ApplicationController
