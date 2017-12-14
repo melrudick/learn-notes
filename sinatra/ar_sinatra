@@ -1,0 +1,24 @@
+We'll use the class name Model to stand in for whatever model your app is working with (post, student, song)
+C-Create: Model.create
+R-Read: Model.all or Model.find(id)
+U-Update: Model.update
+D-Delete: Model.destroy
+Let's take a look at how to build a Sinatra app that allows a user to implement these actions through the interface of the web. The details of what code gets written in each controller acton are vague-you're going to need to do some careful thinking wen it comes to building this. The purpose of this is to illustrate the connections between the carious controller actions and views needed to implement CRUD.
+CREATE - This part is implemented in Sinatra by building a route, or controller action, to render the form for creating a ew instance of your model.
+-get '/model/new' renders a view page with a form
+-new.erb is the view page that contains the form
+-the form sends a post request to another controller action, post'/models'. It's here that you place the code that extracts the form data from the params and uses it to create a new instance of your model class, something like Model.create(attribute: params[:attribute]).
+READ - We can read data in two ways. We may want to read or deliver to our user all of the instances of a class or just one specific instance.
+-get '/models' will handle requests for ALL instances of a class. @models = Model.all, and renders the index.erb view page
+-index.erb renders all of the instances stored in the @models instance variable.
+-get '/models/:id' handles requests for a specific instance. If a user types www.mysite.com/models/2, this route will catch the request and get the id number 2 from the params. It will then find the instance with that id and set it equal to an instance variable @model = Model.find(params[:id]) and render to show.erb
+-show.erb renders @model object.
+UPDATE - to use update action, we need a controller action that renders an update form, and we need a controller action to catch the post request sent my that form.
+-get '/mdels/:id/edit' controller action will render the edit.erb page.
+-edit.erb view page will contain the form for editing a given instance of a model. this form will send a PATCH reqwuest tp patch '/models/:id'.
+-patch controller action will find the instance to update using the id from params, update and save instance. We need to update config.ru to use Sinatra middleware for patch requests
+use Rack::MethodOverride
+run ApplicationController
+then add hidden patch in form.
+MethodOverride will intercept every request sent and received by application. If it finds a request with name="_method" it will set the request type based on what is set in the value attribute, which in this case is patch.
+DELETE - doesn't get its own view page but instead is used via the delete button on the SHOW page of a specific instance. This delete button isn't really a button it's a form. The form should send a delete request to delete "/models/:id/delete" and should have only a submit button with a value of delete. <form method="post" action="/models/<%=@model.id%>/delete"><input type="hidden" name="_method" value="delete"><input type="submit" value="delete"></form>

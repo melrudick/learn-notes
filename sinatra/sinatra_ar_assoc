@@ -1,0 +1,45 @@
+We learned about foreign and primary keys in SQL and how they relate tables to one another. In this lesson we're going to learn how to do this using AR. This lab has pre-written code that you can follow along with. The end goal is to create a relationship in our app that mimics the real like cat-owner relationship: owners can have many cats and cats belong to an owner. Let's assume we have two tables in our db: cats and owners, which we created from the command line using rake.
+
+First we create a cats table from the command line: rake db:create_migration NAME="create_cats". This will give us an empty migration in our db/migrate/folder. Now lets give our cats table attributes: name, age, breed. This will go into our change method.
+
+A primary key uniquely identifies each record in a table. It must be a unique and cannot have NULL values. Luckily, R will create a primary key for us and will also auto-increment it every time we save a new row in our table.
+
+If we use tux to add cats to a table and owners to another, we need to use a foreign key to relate the table to each other. A foreign key points to a primary key in another table. In AR we willuse the tablename_id convention. To add the foreign key to our cats table, we will create another migration.The foreign key always sits on the table of the object that belongs to. In this case, because cats belong to an owner, the owner_id becomes a column in the cats table.
+
+Belongs to and has many -
+Table structure: A cat belongs to an owner and an owner can have many cats.
+class Cat
+  belongs_to :owner
+class Owner
+  has_many :cats
+  The foreign key will go in the belongs to model.
+.create method will instantiate and save the owner to our database. To instantiate the cat object we used the .new and set Maru's owner to the owner we created. Because the .new method did not save the cat object to our database the last line will persist the cat object to our database. The has many/belongs to is the most used association, but there are others as well.
+
+Join tables:
+we have a users table and an items table. the third will be our join table called user items. it will have a column of user_id and a column of item_id.
+MIGRATIONS:
+class CreateUsers < ActiveRecord::Migration
+  def change
+    create_table :users do |t|
+    t.string :name
+    t.timestamps null: false
+class CreateItems < ActiveRecord::Migration
+  def change
+    create_table :items so |t|
+    t.string :name
+    t.integer :price
+    t.timestamps null: false
+class CreateUserItems < ActiveRecord::Migration
+  def change
+    create_table :user_items do |t|
+    t.integer :user_id
+    t.integer :item_id
+    t.timestamps null: false
+MODELS:
+class User < ActiveRecord::Base
+  has_many :user_items
+  has_many :items, through:
+  :user_items
+class UserItem < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :item
