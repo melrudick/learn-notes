@@ -1,0 +1,45 @@
+RESt was from Fielding's frustration with how URLs and their corresponding HTTP verbs were used differently in every single app. He came up with Representational State Transfer as a standard way web apps should structure their URLs. He suggested a few other things. He niticed the rise in web apps commincationg with each other. Using this standard way of forming URLs to access resources, he hoped that inter-app communication would get easier.
+
+Integrating a FB login, having something in your app post to Twitter, pulling a feed of images from Instagram, or even calling a list of locations from Google Maps are examples of using a RESTful API to communicate between apps.
+
+A newsletter app example:
+*You fill out a form on the New Newsletter page and click submit.
+*Data about you, your content, and anything else is sent to the app server.
+*The server interprets the information, recognizes that the request is for a new newsletter, and generates a new record in the database, and performs a myriad of background tasks (updating the counter, sending notifications).
+*Next, the server sends a response back to the client. This does not necessarily mean that the newsletter was posted. The response could be that there was an error posting something like that. However, in this case we will say that the newsletter post went through properly so the server sends a success message and tells the browser which page to go and render.
+*The browser receives the server info and gives the user feedback in this case showing the user a message saying that their newsletter was successfully posted.
+
+RESTful conventions in Rails:
+Whether you are utilizing the built-in view rendering system or using the app purely as an API you will have the tools necessary to follow standardized routing procedures. If we want to build out a newsletter feature, we would need the system to have 4 key actions - Create, Read, Update, Destroy - CRUD actions. In addition to CRUD we will also need an index page that lists out all our newsletters. That is our 5th route. Since our readers will need to have a visual interface for creating and updating records we will need two more routes for that. the GET routes are all routes that usually render some erb content to a browser. These are the routes that our user will work with every day. The POST and PUT are the url in the form action, and the delete is a new verb.
+
+Here is a mapping:
+GET /newsletters - shows all newsletters
+POST /newsletters - Create new
+GET /nesletters/new - shows form for creating a new newsletter
+GET /newsletters/:id/edit - shows form for editing
+GET /newsletters/:id - shows a single One
+PATCH /newsletters/:id - update newsletter
+DELETE /newsletters/:id - delete one
+
+If we had a NewsletterController we would define these 7 methods and Rsils will call them automatically based on the correct route.
+
+index - show all newsletters
+create - create one
+new - show form for creating a new one
+edit - show form for editing one
+show - sho a single one
+update - update one
+destroy - delete one
+
+get and post /things index.html.erb
+get /things/new new.html.erb
+get patch delete /things/:id show.html.erb
+get /things/:id/edit edit.html.erb
+
+Definition of HTTP verbs:
+GET - retrieves whatever info is identifiesd by the URI.
+POST - sends data enclosed in the rewuest to server. The server is expected to use the data to create some new resource.
+PATCH/PUT - update existing resources.
+DELETE - deletes record
+
+In Sinatra you saw how it's possible to declare an action's routes within the controller. Rails method of routing moves routes to a config file and treats them as RESTful by default. 
