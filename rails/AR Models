@@ -1,0 +1,50 @@
+Active Record is the built-in ORM that Rails utilizes to manage the model aspects of an app. What is ORM? Object Relational Mapping System, essentially this is the module that enables your app to manage data in a method driven structure. This means that you are able to run queries, add records, and perform all the traditional database processes by leveraging methods as opposed to writing SQL manually. The traditional way we would query a database of posts: SELECT * FROM posts. AR would look like: Post.all.
+
+You can also use method chaining and scoping with AR, which requires less code and makes a more readable query.
+
+AR Models:
+If we have a database table, why do we need a model file? By using model files, we are able to create an organized layer of abstraction for our data. An important thing to remember is that at the end of the day the model file is a Ruby class. It will typically inherit from the ActiveRecord::Base class, which means that it has access to a number of methods that assist in working with the database. However, we can treat it like a regular Ruby class, allowing you c=to create methods, data attributes, and everything else that you would want to do in a class file. A model file usually contains:
+Custom scopes
+model instance methods
+default settings for database columns
+validations
+model-to-model relationships
+callbacks
+custom algorithms
+
+Creating an AR model:
+s a pro developer, you will be expected to build apps by leveraging a BDD process, so we will walk through how to build each feature with a test first approach so that tests can lead our dev. Focus on the implementation code so that you can get a firm understanding of ho to build a model, database, table, etc.
+
+Creating an Rspec test:
+to make a new directory we say "rails new rails-acrive-record-models-readme - T"
+cd into that directory
+if you add nay gems, run bundle install
+can create rpec config with "rails g rspec:install"
+require "rails_helper"
+describe Post do
+  it 'can be created' do
+  post = Post.create!(title: "My title", description: "The post description")
+  expect(post).to be_valid
+end
+in order for this to work you'll need to create a database table for the posts. you can hand enter everything by creating your own files.
+*** do you have to, or is there another command like rake db:create_migration?
+if you do not make the Post class inherit from Activerecord::Base, you will not get the built in methods like "create".
+
+Another test:
+it 'has a summary' do
+  post = Post.create!(title: "My title", description: "The post description")
+    expect(post.post_summary).to eq("My title - the post description")
+  end
+
+now you need to define post_summary as self.title + "-" + self.description
+
+now you can say Post. last.post_summary in the console.
+As you can see we didn't have to create a controller, route, view in order to get the Post model working. The data aspect of the app can work separately from the view and data flow logic. Tis level of abstraction makes it efficient to test data behavior without having to strongly couple how it is rendered to the use. that said, it's considered best practice to have your controller and view files follow the proper naming conventions so that the MVC assoc. are readable. For example, to build out the controller and view code for our Post model we would create the following structure:
+
+Create a post_controller.rb file that calls on Post model
+Create a views/posts/ dir that stores the views for Post model
+*** what is rake db:create??
+
+Being able to work in different environments is one of the strong points of Rails, and the database.yml file takes advantage of this feature by having different database options for each type of environment. If you take a look at the file, you can see that you can establish different database adapters, pools, timeout values, etc. for each env. This allows you to have a setup such as using SQL locally and Postgres in production, along with having a segmented database env for your testing suite. Some of these items are components that you wont need until you get into more advanced apps.
+
+*** "But just remember that if anything requires database configuration it will be here"???

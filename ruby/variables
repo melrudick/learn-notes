@@ -1,4 +1,4 @@
-Variables allowus to store information. We tell our computer to set aside some space to hol that information so we can retrieve it later. A variable is the lcoation where the information resides, when we need it we know where to look. Use snake_case, and it's a container whose value is what's stored inside of it.
+Variables allow us to store information. We tell our computer to set aside some space to hol that information so we can retrieve it later. A variable is the lcoation where the information resides, when we need it we know where to look. Use snake_case, and it's a container whose value is what's stored inside of it.
 Have in mind in your programs what type of data a variable is storing (string or integer). The equsls sign is "assigning" the value.
 calling a method on a set variable won't change it unless you do something like variable.destroy!
 
