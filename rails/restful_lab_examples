@@ -11,9 +11,12 @@ you have already defined class Student method to_s to have first_name and last_n
 and in your routes.rb in config:
 get 'students' to 'students#index'
  In dynamic routes, we make some changes:
-/welcome path will always show the welcome page.. it is static. synamic routes will render different data based on the parameters passed in. When 42 is passed in to /posts/:id, the app should render the data for the post of 42.
+/welcome path will always show the welcome page.. it is static. dynamic routes will render different data based on the parameters passed in. When 42 is passed in to /posts/:id, the app should render the data for the post of 42.
 we started with
   get 'posts/:id', to: 'posts#show'
 make sure there is a show method in the PostsController (@post = Post.find(params[:id]) and a show.html.erb with the rendered parameters for a view.
-We can chage the get route to a restful resource method. we can use 'only' if we only want the show action.
+We can change the get route to a restful resource method. we can use 'only' if we only want the show action.
   resources :posts, only: :show
+*** still very unclear about what this is and why it's different/better than the first line.
+
+resources :students, only: [:index, :show]

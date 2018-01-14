@@ -1,0 +1,31 @@
+Paths vs Route Helpers:
+Imagine you have a meeting in NYC and you want to get from one sie of the city to another. You can walk or take a taxi. Walking is hard coding. It's slow, there's potential for error, and if something changes it's a lot of work to re-route. The taxi is like a route helper. you
+provide address to driver and let them navigate.
+
+Hard-coded: "/posts/#{@post.id}"
+Route helper: post_path(@post)
+
+It's better to passa arguments into methods as opposed to using string interpolation...
+post_path(post, opt_in: true) is easier to read than "posts/<%=post.id%>? opt_in=true"
+
+Route helpers translate directly into HTML friendly paths. If we have an app with MVC set up for posts, index, and show, it looks like:
+
+resources :posts, only: [:index, :show]
+we can use these methods in the views and controllers. Run rake routes
+the methodn prefixes to be used are posts and post. The methods are _path (relative) and _url (full). relative path is best.
+post_path(3) this is from post GET /posts/:id
+lat column is controller#action
+
+link_to
+this is special to rails and eliminates need for an a href tag.
+BEFORE: <% @posts.each do |post| %>
+  <div><a href='<%= "/posts/#{post.id}" %>'><%= post.title %></a></div>
+<% end %>
+AFTER: <% @posts.each do |post| %>
+  <div><%= link_to post.title, post_path(post) %></div>
+<% end %>
+If you inspect element, you'll see this created an a tag for you.
+
+AS:
+you can use as: in your naming of routes at the end if you want to use a customied path name.
+  get '/register', to: 'users#new', as: 'register'
