@@ -43,3 +43,4 @@ class User < ActiveRecord::Base
 class UserItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :item
+The term "seeding the database" refers to the practice of filling up your database with some dummy data to work with. Otherwise, we won't be able to tell if our app is working or try out the actions and features tat we are building. Sinatra makes it easy for us to seed our database by providing is with something called a seed file. This file should be placed in the db directory, db/seeds.rb. The seed file is where you can write code that creates and saves instances of your models. rake db:seed inserts sample data into the database.
