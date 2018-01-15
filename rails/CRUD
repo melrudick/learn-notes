@@ -60,3 +60,30 @@ def update
   @post.update(title: params[:title], desc: params[:desc])
   redirect_to post_path(@post)
 end
+
+ask about extra credit on this lab edit/update.
+
+form_for:
+if you need many different form fields to be edited, all 100 fields will be resubmitted if you use form_tag. form_tag helper allows us to auto generate HTML form code and integrate data to auto fill values as well as have the form submit data to the controller for creating or updating a record. it lets you pass in the route for where the paramters for the form will be sent and the HTTP method and attributes for eadh field. but it must be manually passed to the route where the form parameters will be submitted. The form has no knowledge of the form's goal. You will have duplicate code throughout the form.
+
+DRY principles? Don't Repeat Yourself
+
+form_for takes in argument of the instance and yields an object of class FormBuilder. It automatically knows the standard route (restful) for the form data as opposed to doing it manually. it gives the option to dynamically change the submitbutton text for partial forms and the new and edit pages will share the same form.
+
+Use form_tag when you simply need an HTML form gnerated, like a search form field or a contact form. Use form_for when your form is directly connected to a model.
+
+refactor:
+<%= form_for(@post) do |f| %>
+the f is an iterator variable that we can use on the new form object letting us dynamically assign elements to each post data attribute, along with auto filling values for each field. This is an ActionView(http://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html)
+<label>Post title:</label>
+<%= f.text_field :title %>
+<label>Post description:</label>
+<%= f.text_Area :description %>
+<%= f.submit %>
+change put route to patch.
+put updates the entire object, where patch updates only the changed elements. they're both used often.
+
+you'll need to change the update method to say:
+@post.update(params.require(:post)) beause form_for makes a nested hash.
+
+textfield vs. textarea: text field usually has one line whereas texarea has multiple lines.
