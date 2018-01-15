@@ -29,3 +29,8 @@ If you inspect element, you'll see this created an a tag for you.
 AS:
 you can use as: in your naming of routes at the end if you want to use a customied path name.
   get '/register', to: 'users#new', as: 'register'
+
+  FOrm Tags:
+  name="post[title] .. this is a nested hash
+  such as a model[attribute]
+  if you use <% params.inspect %> you'll be able to see what will show before the submit button actually works.

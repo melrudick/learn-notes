@@ -1,0 +1,62 @@
+Rails Controller Conventions:
+The next logical step will be to integrate an edit/update action. The trend in Rails is that the logic for rendering a form is separate from the action that manages the database record alteration. For example: the "new" action in the controller simply renders the new form, The "create" actions is what actually handles the process of inserting the form data into the database. In the same fashion, the edit and update actions have a similar convention. The "edit" action will handle rendering the edit form, and the update action will be the method that updates the database record itself.
+Let's draw a get route for our edit form. Since the form will need to know which record is being edited, this will need to be the dynamic route that accepts an :id as a parameter.
+
+get 'posts/:id/edit' do, to: 'posts#edit', as: edit_post
+
+We need an additional route to handle the update action. The second route will also need to be dynamic, accepting the same :id so that the action will know which record is being altered. If you want to know which HTTP verb should be selected, we;re sending data to the server, so we know it's not a get. and since we're not creating a new record ot shouldn't be post. so we will use put.
+
+put 'posts/:id', to: 'posts#update'
+
+on a side note, as a shortvut uou could simply add the edit and update actions to the resources call in the routes files. That would be accomplish the same goal that these two lines do. Run rake routes and see the new routes.
+
+Add controller actions now:
+def edit end
+def update end
+
+edit view template:
+<%= form_tag posts_path do %>
+  <label>Post title:</label><br>
+  <%= text_field_tag :title %><br>
+
+  <label>Post Description</label><br>
+  <%= text_area_tag :description %><br>
+
+  <%= submit_tag "Submit Post" %>
+<% end %>
+
+if you go to the edit page in the browser, it will display form. the flaw us that it doesn't load the record's data in the form.
+
+def edit
+  @post = Post.find(params[:id])
+end
+now that the edit view template will have access to the Post object stored in @post we need to refactor the form so that it auto fills the form fields woth the right data from @post:
+
+<%= text_field_tag :title, @post.title %>
+<%= text_area_tag :description, @post.description %>
+
+instead of updating the apporopriate Post object submitting the foem creates a whole new post. change the target destination of form_tag method from posts_path to post_path(@post). posts_path is like /posts and post_path(@post) is like /posts/:id in Sinatra.
+
+unless we specify otherwise, a form_tag will default to sending an HTTP Post request. to send a Put request instead, we need to add an argument to the form_tag so that it knows which route the data should be passed through and also which verb to use.
+
+<%= form_tag post_path(@post), method: "put" do %>
+
+now it will be routed to the update action. to make sure the data is being properly routed, write this:
+def update
+  raise params.inspect
+end
+
+the raise method will cause the app to pause and print out the params on an error page. you can even say "puts params.inspect". you'll need to go to the page /post/6/edit (example) to get the error message and see the params.
+
+The update action should look like:
+*Query database for Post record that matches :id
+*Store query in an instance var.
+*update values passed from form
+*save changes in database
+*redirect user to the show page to see update.
+
+def update
+  @post = Post.find(params[:id])
+  @post.update(title: params[:title], desc: params[:desc])
+  redirect_to post_path(@post)
+end
