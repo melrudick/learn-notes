@@ -1,0 +1,32 @@
+Rails Generators:
+If the task is matched for using one, use it. Generators create a lot of code and if you're not going to use it, it will confuse your app.
+
+rails g <name of generator> <options> --no-test-framework
+
+the last is a flag that tells the gen not to create tests for newly generated models etc. Don't need the fag on your own rails app. only for Learn because tests already exist.
+
+migrations - to add a column to an existing table, now we can write:
+  rails g migration add_published_status_to_posts published_status:string --no.. (if learn)
+now run rake db:migrate
+-if you made a mistake and want to remove it, run:
+  rails g migration remove_published_status_from_posts, and then the rest of the line
+-if you wrote string, but it actually needed to be boolean, you can write:
+  rails g migration change_post_status_data_type_to_posts post_status:boolean
+  now you will have to manually write in the change_column :posts, :post_status, :string and run rake db:migrate
+
+models - use this one regularly.
+  rails g model Author name:string genre:string bio:text
+this makes an app/models.author.rb
+run rake db:migrate and it will add table to database schema
+-now you can test this in the console by creating a new author with all of the attributes
+
+controllers - great for static views or non-CRUD features.
+  rails g controller admin dashboard stats financials settings
+this creates a ton of code. it creates a controller and routes for each argument, a all view templates, js file, css. there are better options for CRUD functionality.
+
+resource - if building an API, using a front end MVC framework, or creating views, this is great for code.
+  rails g resource Account name:string payment_status:string
+migration file, model, conroller, view with no template files, js, css, a resources call in routes.rb
+
+if yuo run rake routes | grep account
+you'll see all of the routes, but you can add in the ones you want into the controller. 
