@@ -1,0 +1,44 @@
+#validates is an ActiveRecord::Base method we can use to keep bad data away.
+it's a special method call that goes to the top of the model class definitions and prevent them form being saved to the database if the data doesn't look right. they have the job of protecting the database from invalid code. SQLite has data validation features tha check things like length and data type. In Rails, these are NOT used because each database works a little differently.
+Invalid Data- suppose you get a new phone and ask all your friends for their numbers. One of them tells you 555-806-482. it could be valid or something else nit not our phone numbers here.
+
+You can google AR validations.
+#validates is our swiss army knofe for validations. it takes two arguments: the name of the attribute we want to validate, and a hash of options that include details of how to validate it.
+validates :name, presence: true will not be saved if the name is empty.
+
+Remember that #new instantiates a new AR model without saving it to the database whereas #create attempts to save it (like new and save). An AR model instantiated with #new won't be validated because no attempt to write to the database was made. Validations run with save or create. You CAN hit validations without touching the database by using #valid? method. all methods listed in sec 4 of AR val.
+
+when a record fails validation (you can see in return values) it will return as false. if you add ! at the end of a method call it will raise an exception.
+
+To find out why validations fail you can look at #errors objects. errors.messages (like p = Person.new, p.errors.messages (empty), p.valid? (false), p.errors..messages (name: can't be blank))
+
+you can check one attribute at a time by passing the name to errors as a key
+person.errors[:name]
+
+displaying validations errors in views (see sec 8) if @article.errors.any?
+div id="error_explanation"...
+length is a more clear one
+validates :name, length: {minimum: 2}
+you can use "in:" for a range, like for password length.
+
+validates :email, uniqueness: true
+no duplication
+
+you can use #validate when you're not sur which to use. If you need the same logic somehwere else you can use the saved instance variable that goes with it and use #validates on that.
+
+#validate for quick custon validations that you can extract later.
+#EachValidator and #validates for validating one specific attribute.
+@Validator and #validates_with for doing many validations in one pass.
+
+Validators in Controller Actions:
+we're going to change the way #create looks. if we create a post and the post is invalid, it won't redirect to the show page and will instead give a 404 error and lose all the feedback from validations. All of the variables set when the page loads will disappear, throwing out everything after each request except for cookies(login, sessions).
+
+def create
+@post = Post.new(post_params)
+if @post.valid?
+@post.save
+redirect to post_path(@post)
+else
+render :new
+
+this way we don't lose the instance of @post.
