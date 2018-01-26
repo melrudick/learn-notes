@@ -1,0 +1,46 @@
+feedback loop: decide what to do next, think of an approach, write some code, compile and run code, observe output.
+rails feedback loop: rails ships with many features to save precious time in feedback loops, but there's no two ways about it. in anything but the most trivial app, it can be pretty complex to make sure your code is actually working correctly.
+
+Capybara?
+
+RSPEC - rails uses Test::Unit for testing, which keeps its tests in the test/ folder. you can skip Test::Unit by typing rails new -T when you start. This will have you use rspec.
+(rails new cool_app -T)
+then add a gem
+(gem 'rspec-rails')
+then add spec folder with the right boilderplate
+(bundle install, bundle exec rails g, rspec:install) all different lines
+this is rails equiv to rspec --init
+auto analogy:
+MODELS are the basic parts that make cars useful, like the fuel tank, engine, and tires.
+VIEWS are the interactive parts that the driver can see and touch, like the steering, pedals, gear shift.
+CONTROLLERS are the rst of the connecting parts under the hood that connect the views tothe models. The user doesn't know they exist.
+Models are easy to test becayse they have very specific purposes that can be easily separated fromt hr rest of the app.
+
+MODEL TESTS - these go in spec/models, one file per model
+Model tests use the least amount of special features, since you already need is the model class itself. The most common usage for the model tests is to make sure you have set up your validations correctly.
+  class Monster < ActiveRecord::Base
+  validates :name, presence: true
+  validates :size, inclusion: { in: ["tiny", "average", "like, REALLY big"] }
+  validates :taxonomy, format: { with: /\A[A-Z](\.|[a-z]+) [a-z]{2,}\z/,
+    message: "must include genus and species, like 'Homo sapiens'" }
+end
+first we'll make sure that it understands a valid Monster:
+ describe Monster do
+  let(:attributes) do
+  { name: "whatever", size: "tiny", taconomy: "whatever"}
+  end
+it "is considered valid" do
+expect(Monster.new(attributes)).to be_valid
+end
+end
+
+Let - helper method that takes a symbol and a block. it runs the block once per example in which it is called and saves the return value in a local variable named according to the symbol. This means you get a fresh copy in every test case.
+
+why is let better than "before :each"? you hve better control over your data.
+let used to make an attribute hash: we could have put the entire Monster.new call inside our let block but using an attribute hash instead has some advantages:
+if we want to tweak the data first, we can just pass attributes.merge(name: "Other") while preserving the rest of the attributes.
+we can also refer to the attributes when making assertions about what the actual object should look like.
+
+Be-valid: this checks for valid? so be_valid checks monster.valid?
+
+What the hell are we even talking about here?

@@ -6,4 +6,21 @@ Interpolation:
 This is to reference something, or pass a value through that has been given in the form of a variable, like a fill-in-the-blank. It interpolates(or renders) a variable into a string.
 You pass in arguments to make code more reusable and abstract. An argument is a placeholder. An argument in the definition will make it requeired whenever using this method.
 Naming variables need to be descriptive and concise. Scope means that not all variables exists everywhere in a program so that they con't be overwritten.
-You can't define a variable outside of a method and think it will work within a method (would have to use an instance or class var instead)
+You can't define a variable outside of a method and think it will work within a method (would have to use an instance or class var instead). Also, you need to define it before you try to interpolate or it will hit the request to do so and not know what you're talking about.
+
+Arrays are collections of Ruby objects. Array.new or [1, 2, 3]
+7.5.floor or 7.5.ceil for rounding up or down. 7.5 is considered a float.
+Hashes store objects in Ruby. They differ from arrays in that they function like dictionaries. Instead od a simple comma separated list, hashes are composed of key/value pairs, like word and definition in a dictionary.
+
+A string: data that represents textual data in quotes.
+"hello".class will return => String because it belongs to the string class. type this for anything and see what data type it is.
+String.new will give you an empty string. String.new("hello") will create the string hello. "hello".upcase, etc
+
+If we have an array with speed_dial[1] #=> "Kay" and want to change it to Chipps, we can do speed_dial[1] = "Chipps" and the old value will be forgotten.
+
+add only one item to end of array- famous_cats << "garfield"
+add multiple items - famous_cats.push("garfield")
+add to the front - famous_cats.unshift("garfield")
+remove last - maru = famous_cats.pop .. this will return it.
+remove first - maru = famous_cats.shift .. returns it.
+famous_cats.include?("Garfield")

@@ -1,0 +1,89 @@
+foreign keys:
+it all starts in the database. foreign keys are columns that refer to the primary key of another table. Conventionally, foreign keys in AR are comprised of the name of the model you're referencing, and _id. So for example, if the foreign key was for a posts table it would be post_id.
+
+Like any other column, the foreign keys are accessible through the instance methods of the same name. For example, a migration like:
+class AddAuthorToPosts
+  def change
+    change_table :posts do |t| t.integer :author_id
+  end
+end
+
+Many-to-one relationships:
+By using AR's macro-style association class methods, we can add some convenient instance methods to our models. The most common relatioship is many-to-one, and it is declared in AR as belongs_to and has_many.
+
+Belongs_to: Each "Post" is associated with one "Author". (class Post...belongs_to :author)
+now author is an instance method. That Author object will be attached to that @post.
+  @post.author_id = 5
+  @post.author #=> Author id=5
+
+Has_many: On the other side, each Author might be associated with zero, one, or more Post objects. We haven't changed the schema of the authors table at all, AR is just going to use posts.author_id to do all of the look-ups.
+class Author...has_many :posts
+@author.posts shows you all their posts.
+model - Author
+Table - authors
+Foreign Key - author_id
+belongs_to :author
+has_many :authors
+like many AR class methods, the symbol you pass determines the name of the instance method that will be defined.
+
+***So belongs_to :author will give you @post.author and has_many :posts will give you @author.posts.
+
+Building a new item in a collection:
+if you want to add a new post for an author, you might start thiw way:
+new_post = Post.new(author_id: @author.id. title: "Web Dev")
+new_post.save
+better to do this with the "macros":
+new_post = @author.posts.build(title: "Web Dev")
+new_post.save
+This will return a new Post object wiht the author_id already set for you. We use this one as much as possible because it's just easier. "build" works just like new. So the instance that is returned isn't quite saved to the database just yet. You'll need to #save the instance when you want it to be persisted to the database.
+
+Setting a singular association:
+The setup process is a little bit less intuitive for a singular association. Remember, a post belongs_to an author. The verbose way of creating this assoc would be:
+@post.author = Author.new(name: "Leroy")
+In the previous section, @author.posts always exists, even if it's an empty array (has_many). Here, @post.author is nil until the author is defined(belongs_to assigns it).
+AR can't give us something like @post.author.build. Instead, it prepends the attribute with build_ or create_. The create_ option will persist to the database for you.
+
+new_author = @post.build_author(name: "Leroy")
+Remember if you use the build_ option, you'll need to persist your new author with #save.
+
+Collection convenience:
+If you add an existing object to a collection association, AR will conveniently take care of setting the foreign key for you:
+@author = Author.find_by(name: "Leroy")
+@author.posts ... []
+@post = Post.new(title: "Web Dev")
+@post.author .... nil
+@author.posts << @post
+@post.author #=> Author @name = "Leroy"
+
+One to one relationships:
+profiles can get pretty complex, so in large apps it can be a good idea to give them their own model.
+- every author would have one, and only one, profile
+- every profile will have one, and only one, author
+belongs_to makes another appearance in this relationship, but instead of has_many the other model is declared with has_one.
+If you're not sure which model should be declared with which macro, it's usually a safe bet to put belongs_to on whichever model has the foreign key column it its database table.
+
+Many to many relationships and join tables:
+each author has many posts, each post has one author. This is balanced. We're programmers so this really disturbs us. Let's shake it up with tags.
+- one to one doesn't work because a post can have multiple tags
+- many to one doesn't work because a tag can appear on multiple posts
+because there is no owner model in this relationship, there's also no right place to put the foreign key column.
+join table - tag_id and post_id
+create_join_table :posts, :tags
+this makes a table called posts_tags
+has_many :through -
+to work with the join table both our Post and Tag models will have a has_many association with the posts_tags table. We also need to associate Post and Tag themselves. Ideally, we'd like to be able to call a @my_post.tags method, right? That's where has-many :through comes in. To do this requires a bit of focus. Let's add the has_many :posts_tags line to our Post and Tag models:
+class Post
+  has_many :posts_tags
+  has_many :tags, through: :posts_tags
+end
+class PostsTag
+  belongs_to :post
+  belongs_to :tag
+end
+class Tag
+  has_many :posts_tags
+  has_many :posts, through: :posts_tags
+end
+
+So now we can run code like @post.posts_tags to get all the join entries. This is kinda sorta what we want. What we really want is to be able to call @post.tags, so we need one more has_many relationship to complete the link between tags and posts: has_many :through. Essentially our Post model has many tags through the posts_tags table, and vice versa. (threw it in above)
+Now we can use the @post.tags and @tag.posts methods.

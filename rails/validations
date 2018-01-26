@@ -42,3 +42,96 @@ else
 render :new
 
 this way we don't lose the instance of @post.
+
+Validations with the form-tag:
+1. user fills out form and hits submit and it goes to a post request. 2. controller sees that validations have fails and re-renders the form. 3. view displays the errors.
+step 3 is client side of validations.
+how to pre-fill forms with user's input so they don't have to type everything: form_tag and form_for
+form_tag:
+<%= form_tag("/people") do %> ... this is the action and method
+  Name: <%= text_field_tag "name", @person.name (this adds the value being passed in)%> input types with id
+  <%= submit_tag "Create Person" %> <% end %> name and value
+  in model:
+class Person
+  validates :name, format: {without: /[0-9]/, message: "does not allow numbers"}
+  validates :email, uniqueness: true
+our #create:
+  def create
+  @person = Person.new(person_params)
+  if @person.valid?
+  @person.save
+  redirect_to person_path(@person)
+  else
+  render :new
+As per lesson: when the browser renders those inputs They'll be pre-filled forms because @person= Person.new will create an empty model object whose attributes are all nil.
+
+Displaying errors with errors.full_messages:
+when a model fails validation, its errors attribute is filled with information about what went wrong. Rails creates an ActiveModel::Errors object to carry this info.
+The simplest way to show errors is to just spit them all out at the top of the form by iterating over @person.errors. full_messages. But first we'll have to check whether there are errors to display with @person.errors.any?
+<% if @person.errors.any? %>
+  <div id="error_explanation">
+  <h2>There were some errors:</h2>
+  <ul><%@person.errors.full_messages.each do |message| %>
+  <li><%= message %></li>
+  <% end %></ul></div><% end %>
+  each error will show up as a list item if you inspect it.
+  note that |message| is iterating over full_messages and will list all error messages that it creates.
+  All together with everything simplified and cleaned up:
+
+  <%= form_tag("/people") do %>
+    <% if @person.errors.any? %>
+    <div id="error_explanation">
+      <h2>There were some errors:</h2>
+      <ul>
+      <% @person.errors.full_messages.each do |m| %>
+        <li><%= m %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="<%='field_with_errors' if                    @person.errors[:name].any? %>">
+    <%= label_tag "name", @person.name %>
+  </div>
+
+  <div clas="<%= 'field_with_errors' if @person.errors[:email].any? %>">
+    <%= label_tag "email", "Email" %>
+    <%= text_field_tag "email", @person.email %>
+  </div>
+  <%= submit_tag "Create" %>
+  <% end %>
+
+validations with form_for:
+<% form_for @post do |f| %>
+<%= f.text_field :title %>
+<%= f.text_area :content %>
+<%= f.submit %>
+<% end %>
+
+form-tag doesn't know what action we're going to use because it has no model object to check. form)for knows that an empty, unsaved model object needs a "new" form and a populated object needs an "edit" form.
+  create blank object:
+  def new
+    @post = Post.new
+  def create
+    @post = Post.create(post_params)
+
+    the text_field creates a div tag with field_with_errors if there are any failed validations.
+  if there's an html issue it's because an <input> within a <div> can get messed up.
+
+  inspect with option command u or i
+
+  Delete Forms:
+  Problems here. rails doesn't use the right method to delete.
+    def destroy
+    Person.find(params[:id]).destroy
+    redirect_to people_url
+
+  you can also delete from a list in index view:
+  <% @people.each do |person| %>
+<div class="person">
+  <span><%= person.name %></span>
+  <%= link_to "Delete", person, method: :delete, data: { confirm: "Really?" } %>
+</div>
+<% end %>
+<a data-method> will submit a delete request as if a form had been submitted. It will use "get" if no javascript used.
+data-confirm pops up a confimation window before the link allowing the user to make sure they're ready to delete.

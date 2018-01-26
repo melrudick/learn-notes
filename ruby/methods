@@ -1,0 +1,24 @@
+a method HAS to be called in order to see it in the terminal
+Return values of methods:
+Methods are like vending machines. You put in the number and your money. The soda is the return. Same as puts. the return value of
+def restaurant
+  restaurant_name = "Guy's Bar"
+  cuisine = "american"
+  motto = "Welcome"
+the return will be the last line written/read = "welcome"
+def name
+  puts "Guy"
+  "guy"
+end will both print and return the name. the return value of puts is always nil, so if you reversed these, you would see "guy" and then nil.
+th return keyword if called in here will disrupt your methid and return whatever you told it to.
+
+def greeting(name)
+  puts "Hello, #{name}"
+end
+then call - greeting("Sophie")
+
+Arguments create new local variables that can be used within the method. When you name an argument, you are defining what bare word you want to use to access that data, just like creating a variable.
+
+if you define a variable outside of a method you won't have access to it unless you pass it in as an argument.
+
+remember to use case, if/else/ternary operators.

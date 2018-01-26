@@ -1,0 +1,2 @@
+IRB is interactive Ruby, and pry is more flexible REPL (Read, Evaluate, Print, Loop)
+"binding" will retain the context of your scope so you can use them outside of that context.
