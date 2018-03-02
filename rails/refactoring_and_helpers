@@ -1,0 +1,14 @@
+software architecture - overall ease of change, avoidance of bugs, design decisions.
+
+Separation of Concerns:
+View - end user experience on a website in browser. what they read, click, see in a flash, and hear. "interface"
+Model - where the data resides and is altered
+Controller - manages communication between these two.
+
+The user requests data by clicking or submitting and entering a URL in the browser. The request is sent to the server.
+The controller sasks the model to provide data depending on request.
+The model accesses or manipulates the data from database and returns result to controller.
+The controller sends the response back to user, presented by views.
+
+If you want a new design (smartphone accessibility, an app that talks to you, etc), you only need to make a new "view", not change code.
+You don't want to introduce bugs to the existing model and controller code.
