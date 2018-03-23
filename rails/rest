@@ -42,4 +42,12 @@ POST - sends data enclosed in the rewuest to server. The server is expected to u
 PATCH/PUT - update existing resources.
 DELETE - deletes record
 
-In Sinatra you saw how it's possible to declare an action's routes within the controller. Rails method of routing moves routes to a config file and treats them as RESTful by default. 
+In Sinatra you saw how it's possible to declare an action's routes within the controller. Rails method of routing moves routes to a config file and treats them as RESTful by default.
+
+Routes and Resources:
+what is a dynamic route (authors/:id) and what makes something RESTful?
+
+why does this make no sense????
+Sometimes people get confused by path helpers and what they take as arguments. For example, why does posts_path not take an argument, but post_path(@post) does? posts_path refers to all of the posts, so we're not talking about a specific post (no specific ID). When we're looking at the post_path, we're referring to a specific post, and the Rails helper needs to know which post so that it can generate the proper url, e.g., posts/1 as opposed to posts/2.
+
+this readme just had me write author_posts_path(post), so what is it talking about?

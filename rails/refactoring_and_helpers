@@ -12,3 +12,9 @@ The controller sends the response back to user, presented by views.
 
 If you want a new design (smartphone accessibility, an app that talks to you, etc), you only need to make a new "view", not change code.
 You don't want to introduce bugs to the existing model and controller code.
+
+A helper's concern is limited, and the view will be responsible for telling whether a local or instance variable should be used. Helpers don't need to know that, to keep it bastract.
+
+Application Helper is often where you would put method for current_user because it's used in almost every view.
+
+"Title" can be a broad term in a view, so we can use Application Helper so that it can be used ny a post or author view.
