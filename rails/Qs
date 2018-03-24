@@ -1,1 +1,22 @@
-This allows for you to have a setup such as using SQLite locally and Postgres in production
+This allows for you to have a setup such as using SQLite locally and Postgres - alt. to SQLite - in production, along with having a segmented database environment for your testing suite.
+
+What part of Rails is ActiveRecord?
+
+rendering vs redirecting
+
+bundle exec rspec - runs off of your specific gem versions
+
+what is Rake - task mgmt, what is Rack? - library for HTTP requests
+
+HTTP
+
+Rails has RESTful principles built into its core, so, whether you are utilizing the built-in view rendering system or using the application purely as an API, you will have the tools necessary to follow standardized routing procedures.
+
+if you want to make a custom route (instead of /users/new, say /register) you can use get "users/new", to: "users#new", as: "register". the user will see it in the url as "register". how would you then utilize the register_path? wouldn't it still be the new_users_path? no, we would use it as our prefix helper in a view.
+
+in rails url helpers, we set :active to false. then we did student.toggle!(:active). this is more effective with a button. look at prefix in rake routes activate_student. this is what we would use in our view to "link_to" if making a button. (added button)
+
+the name attribute in an input tag is a nested hash, like post[title]
+these are simply the params[:post][:title]
+
+form_tag makes an authenticity token (why do we need this?)
