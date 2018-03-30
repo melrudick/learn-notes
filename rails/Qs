@@ -3,6 +3,12 @@ This allows for you to have a setup such as using SQLite locally and Postgres - 
 What part of Rails is ActiveRecord?
 
 rendering vs redirecting
+- so.. rendering reloads a page WITHOUT getting rid of the instance passed in.
+- redirecting throws the instance away and makes a new request.
+- so... redirecting takes more power??
+so... when you write @person.name, you're able to render again with the same instance, pre-filled with the already-typed info.
+
+"We can also use the same form code for empty and pre-filled forms because @person = Person.new will create an empty model object whose attributes are all nil." - what does this mean?
 
 bundle exec rspec - runs off of your specific gem versions
 

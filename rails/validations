@@ -1,3 +1,5 @@
+validations will only trigger and not touch the database if you call #valid? on it. for instance. Person.new will not save to the database and then you can call #valid? on it to then conditionally .save it.
+
 #validates is an ActiveRecord::Base method we can use to keep bad data away.
 it's a special method call that goes to the top of the model class definitions and prevent them form being saved to the database if the data doesn't look right. they have the job of protecting the database from invalid code. SQLite has data validation features tha check things like length and data type. In Rails, these are NOT used because each database works a little differently.
 Invalid Data- suppose you get a new phone and ask all your friends for their numbers. One of them tells you 555-806-482. it could be valid or something else nit not our phone numbers here.
@@ -14,7 +16,6 @@ To find out why validations fail you can look at #errors objects. errors.message
 
 you can check one attribute at a time by passing the name to errors as a key
 person.errors[:name]
-
 displaying validations errors in views (see sec 8) if @article.errors.any?
 div id="error_explanation"...
 length is a more clear one
@@ -135,3 +136,5 @@ form-tag doesn't know what action we're going to use because it has no model obj
 <% end %>
 <a data-method> will submit a delete request as if a form had been submitted. It will use "get" if no javascript used.
 data-confirm pops up a confimation window before the link allowing the user to make sure they're ready to delete.
+
+when making a new.html.erb , you use field _with_errors to pre-fill for when the page is re-rendered. it's one step ahead.

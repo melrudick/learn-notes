@@ -34,3 +34,7 @@ you can use as: in your naming of routes at the end if you want to use a customi
   name="post[title] .. this is a nested hash
   such as a model[attribute]
   if you use <% params.inspect %> you'll be able to see what will show before the submit button actually works.
+
+form_tag and form_for:
+"post[content]", @post.content
+the first is the root parameter name, the second is the attribute
