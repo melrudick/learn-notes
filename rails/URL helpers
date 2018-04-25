@@ -5,14 +5,14 @@ provide address to driver and let them navigate.
 Hard-coded: "/posts/#{@post.id}"
 Route helper: post_path(@post)
 
-It's better to passa arguments into methods as opposed to using string interpolation...
+It's better to pass arguments into methods as opposed to using string interpolation...
 post_path(post, opt_in: true) is easier to read than "posts/<%=post.id%>? opt_in=true"
 
 Route helpers translate directly into HTML friendly paths. If we have an app with MVC set up for posts, index, and show, it looks like:
 
 resources :posts, only: [:index, :show]
 we can use these methods in the views and controllers. Run rake routes
-the methodn prefixes to be used are posts and post. The methods are _path (relative) and _url (full). relative path is best.
+the method prefixes to be used are posts and post. The methods are _path (relative) and _url (full). relative path is best.
 post_path(3) this is from post GET /posts/:id
 lat column is controller#action
 

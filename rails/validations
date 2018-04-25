@@ -135,6 +135,8 @@ form-tag doesn't know what action we're going to use because it has no model obj
 </div>
 <% end %>
 <a data-method> will submit a delete request as if a form had been submitted. It will use "get" if no javascript used.
-data-confirm pops up a confimation window before the link allowing the user to make sure they're ready to delete.
+data-confirm pops up a confirmation window before the link allowing the user to make sure they're ready to delete.
 
 when making a new.html.erb , you use field _with_errors to pre-fill for when the page is re-rendered. it's one step ahead.
+
+"Here is a rule of thumb: Whenever you are modifying an attribute of the model, use before_validation. If you are doing some other action, then use before_save."

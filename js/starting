@@ -1,0 +1,18 @@
+data types can be found by writing: typeof() -accepts one arg
+you can have numbers, strings, objexts, symbols, null, undefined
+don't need float, all numbers are number, even infinity
+string - '', "", ``
+collections are like hashes, in curly brackets, refer to objects
+Null is an intentionally absent object. will return "object"
+undefined means not yet assigned a value
+primitive is for a single value
+
+const, let, var
+mist camelCase your variables
+first you declare a variable, var pi;
+then it is stored
+then assign a value, pi = 3.14159;
+one line, var pi = 3.14159;
+don't declare and not assign a variable
+let won't let you reassign a variable
+unless you leave out the "let", different from "var"
